@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_facilities">
+
+    <fragment
+        android:id="@+id/nav_facilities"
+        android:name="com.daregol.studentbase.ui.facilities.FacilitiesFragment"
+        android:label="@string/menu_facilities"
+        tools:layout="@layout/fragment_facilities">
+
+        <action
+            android:id="@+id/action_edit"
+            app:destination="@id/nav_facility_dialog" />
+
+        <action
+            android:id="@+id/action_select"
+            app:destination="@id/nav_groups" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/nav_facility_dialog"
+        android:name="com.daregol.studentbase.ui.facilitydialog.FacilityDialogFragment"
+        android:label="@string/menu_facility_dialog"
+        tools:layout="@layout/fragment_facility_dialog">
+
+        <argument
+            android:name="facility"
+            app:argType="com.daregol.studentbase.data.Facility"
+            app:nullable="true" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/nav_groups"
+        android:name="com.daregol.studentbase.ui.groups.GroupsFragment"
+        android:label="@string/menu_groups"
+        tools:layout="@layout/fragment_groups">
+
+        <argument
+            android:name="facility"
+            app:argType="com.daregol.studentbase.data.Facility" />
+
+        <action
+            android:id="@+id/action_edit"
+            app:destination="@id/nav_group_dialog" />
+
+        <action
+            android:id="@+id/action_select"
+            app:destination="@id/nav_students" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/nav_group_dialog"
+        android:name="com.daregol.studentbase.ui.groupdialog.GroupDialogFragment"
+        android:label="@string/menu_group_dialog"
+        tools:layout="@layout/fragment_group_dialog">
+
+        <argument
+            android:name="facility"
+            app:argType="com.daregol.studentbase.data.Facility" />
+
+        <argument
+            android:name="group"
+            app:argType="com.daregol.studentbase.data.Group"
+            app:nullable="true" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/nav_students"
+        android:name="com.daregol.studentbase.ui.students.StudentsFragment"
+        android:label="@string/menu_students"
+        tools:layout="@layout/fragment_students">
+
+        <argument
+            android:name="group"
+            app:argType="com.daregol.studentbase.data.Group" />
+
+        <action
+            android:id="@+id/action_edit"
+            app:destination="@id/nav_student_dialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/nav_student_dialog"
+        android:name="com.daregol.studentbase.ui.studentdialog.StudentDialogFragment"
+        android:label="@string/menu_student_dialog"
+        tools:layout="@layout/fragment_student_dialog">
+
+        <argument
+            android:name="group"
+            app:argType="com.daregol.studentbase.data.Group" />
+
+        <argument
+            android:name="student"
+            app:argType="com.daregol.studentbase.data.Student"
+            app:nullable="true" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/nav_info"
+        android:name="com.daregol.studentbase.ui.info.InfoFragment"
+        android:label="@string/menu_info"
+        tools:layout="@layout/fragment_info" />
+</navigation>

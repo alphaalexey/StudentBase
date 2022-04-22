@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">Student Base</string>
+
+    <string name="nav_header_title">@string/app_name</string>
+    <string name="nav_header_subtitle">daregol@mail.ru</string>
+    <string name="nav_header_desc">Заголовок навигации</string>
+
+    <string name="fab_description">Добавить</string>
+
+    <string name="menu_facilities">Факультеты</string>
+    <string name="menu_facility_dialog">Факультет</string>
+    <string name="menu_groups">Группы</string>
+    <string name="menu_group_dialog">Группа</string>
+    <string name="menu_students">Студенты</string>
+    <string name="menu_student_dialog">Студент</string>
+    <string name="menu_info">Сведения</string>
+
+    <string name="action_edit">Изменить</string>
+    <string name="action_remove">Удалить</string>
+
+    <string name="dialog_ok">Сохранить</string>
+    <string name="dialog_cancel">Отмена</string>
+
+    <string name="loading_facilities">Загрузка факультетов</string>
+    <string name="facility_add_error">Не удалось добавить факультет</string>
+    <string name="facility_remove_error">Нельзя удалить факультет с группами</string>
+
+    <string name="dialog_facility_title">Факультет</string>
+    <string name="dialog_facility_name">Название</string>
+    <string name="dialog_facility_name_busy">Факультет с таким названием уже существует</string>
+
+    <string name="loading_groups">Загрузка групп</string>
+    <string name="group_add_error">Не удалось добавить группу</string>
+    <string name="group_remove_error">Нельзя удалить группу со студентами</string>
+
+    <string name="dialog_group_title">Группа</string>
+    <string name="dialog_group_number">Номер</string>
+    <string name="dialog_group_number_busy">Группа с таким номером уже существует</string>
+
+    <string name="loading_students">Загрузка групп</string>
+    <string name="student_add_error">Не удалось добавить группу</string>
+
+    <string name="dialog_student_title">Студент</string>
+    <string name="dialog_student_name">Имя</string>
+    <string name="dialog_student_lastname">Фамилия</string>
+    <string name="dialog_student_middlename">Отчество</string>
+    <string name="menu_search">Искать</string>
+</resources>

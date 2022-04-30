@@ -44,6 +44,8 @@ public class Student implements Parcelable {
     private String name;
     private String lastname;
     private String middlename;
+    private String email;
+    private String phone;
     @ColumnInfo(name = "group_id")
     private int groupId;
 
@@ -51,11 +53,14 @@ public class Student implements Parcelable {
     }
 
     @Ignore
-    public Student(int id, String name, String lastname, String middlename, int groupId) {
+    public Student(int id, String name, String lastname, String middlename,
+                   String email, String phone, int groupId) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
         this.middlename = middlename;
+        this.email = email;
+        this.phone = phone;
         this.groupId = groupId;
     }
 
@@ -65,6 +70,8 @@ public class Student implements Parcelable {
         name = student.name;
         lastname = student.lastname;
         middlename = student.middlename;
+        email = student.email;
+        phone = student.phone;
         groupId = student.groupId;
     }
 
@@ -74,6 +81,8 @@ public class Student implements Parcelable {
         name = in.readString();
         lastname = in.readString();
         middlename = in.readString();
+        email = in.readString();
+        phone = in.readString();
         groupId = in.readInt();
     }
 
@@ -109,6 +118,22 @@ public class Student implements Parcelable {
         this.middlename = middlename;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public int getGroupId() {
         return groupId;
     }
@@ -128,6 +153,8 @@ public class Student implements Parcelable {
         parcel.writeString(name);
         parcel.writeString(lastname);
         parcel.writeString(middlename);
+        parcel.writeString(email);
+        parcel.writeString(phone);
         parcel.writeInt(groupId);
     }
 }

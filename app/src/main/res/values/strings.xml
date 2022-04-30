@@ -44,5 +44,6 @@
     <string name="dialog_student_name">Имя</string>
     <string name="dialog_student_lastname">Фамилия</string>
     <string name="dialog_student_middlename">Отчество</string>
-    <string name="menu_search">Искать</string>
+    <string name="dialog_student_email">Почта</string>
+    <string name="dialog_student_phone">Номер телефона</string>
 </resources>

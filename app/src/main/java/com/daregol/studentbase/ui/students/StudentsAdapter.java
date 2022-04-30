@@ -37,6 +37,8 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.Studen
         holder.binding.name.setText(student.getName());
         holder.binding.lastname.setText(student.getLastname());
         holder.binding.middlename.setText(student.getMiddlename());
+        holder.binding.email.setText(student.getEmail());
+        holder.binding.phone.setText(student.getPhone());
 
         holder.binding.getRoot().setOnClickListener(view -> mClickListener.onClick(student));
         holder.binding.dots.setOnClickListener((view -> mClickListener.onDotsClick(view, student)));

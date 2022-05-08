@@ -37,6 +37,7 @@
     <string name="dialog_group_number">Номер</string>
     <string name="dialog_group_number_busy">Группа с таким номером уже существует</string>
 
+    <string name="students_sorting">Сортировка</string>
     <string name="loading_students">Загрузка групп</string>
     <string name="student_add_error">Не удалось добавить группу</string>
 

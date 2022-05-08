@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.daregol.studentbase.db.AppDatabase;
 import com.daregol.studentbase.db.dao.StudentDao;
 import com.daregol.studentbase.ui.studentdialog.StudentDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 public class StudentsFragment extends Fragment {
     private FragmentStudentsBinding binding;
@@ -67,6 +69,29 @@ public class StudentsFragment extends Fragment {
             }
         });
         binding.studentsList.setAdapter(adapter);
+
+        final String[] sortingTypes = getResources().getStringArray(R.array.students_sorting);
+        ArrayAdapter<String> sortingAdapter =
+                new ArrayAdapter<>(
+                        requireContext(),
+                        android.R.layout.simple_list_item_1,
+                        sortingTypes);
+        final MaterialAutoCompleteTextView sortingInput = binding.sortingInput;
+        sortingInput.setText(sortingAdapter.getItem(0));
+        sortingInput.setAdapter(sortingAdapter);
+        sortingInput.setOnItemClickListener((parent, view, position, id) -> {
+            binding.loading.setVisibility(View.VISIBLE);
+            binding.studentsList.setVisibility(View.GONE);
+            switch (position) {
+                case 0:
+                    adapter.sortById();
+                    break;
+                case 1:
+                    adapter.sortByLastnames();
+            }
+            binding.loading.setVisibility(View.GONE);
+            binding.studentsList.setVisibility(View.VISIBLE);
+        });
 
         StudentsViewModel studentsViewModel = new ViewModelProvider(getViewModelStore(),
                 new StudentsViewModelFactory(requireActivity().getApplication(), group.getId()))

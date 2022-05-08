@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.daregol.studentbase.data.Student;
 import com.daregol.studentbase.databinding.StudentItemBinding;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.StudentViewHolder> {
@@ -87,6 +89,18 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.Studen
             mStudentList.addAll(studentList);
             result.dispatchUpdatesTo(this);
         }
+    }
+
+    public void sortById() {
+        final List<Student> newStudentList = new ArrayList<>(mStudentList);
+        newStudentList.sort(Comparator.comparingInt(Student::getId));
+        setStudentList(newStudentList);
+    }
+
+    public void sortByLastnames() {
+        final List<Student> newStudentList = new ArrayList<>(mStudentList);
+        newStudentList.sort(Comparator.comparing(Student::getLastname));
+        setStudentList(newStudentList);
     }
 
     static class StudentViewHolder extends RecyclerView.ViewHolder {

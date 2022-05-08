@@ -17,6 +17,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/number"
+            style="@style/TextAppearance.Material3.TitleLarge"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@id/dots"

@@ -46,6 +46,7 @@ public class Student implements Parcelable {
     private String middlename;
     private String email;
     private String phone;
+    private String date;
     @ColumnInfo(name = "group_id")
     private int groupId;
 
@@ -54,13 +55,14 @@ public class Student implements Parcelable {
 
     @Ignore
     public Student(int id, String name, String lastname, String middlename,
-                   String email, String phone, int groupId) {
+                   String email, String phone, String date, int groupId) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
         this.middlename = middlename;
         this.email = email;
         this.phone = phone;
+        this.date = date;
         this.groupId = groupId;
     }
 
@@ -72,6 +74,7 @@ public class Student implements Parcelable {
         middlename = student.middlename;
         email = student.email;
         phone = student.phone;
+        date = student.date;
         groupId = student.groupId;
     }
 
@@ -83,6 +86,7 @@ public class Student implements Parcelable {
         middlename = in.readString();
         email = in.readString();
         phone = in.readString();
+        date = in.readString();
         groupId = in.readInt();
     }
 
@@ -134,6 +138,14 @@ public class Student implements Parcelable {
         this.phone = phone;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public int getGroupId() {
         return groupId;
     }
@@ -155,6 +167,7 @@ public class Student implements Parcelable {
         parcel.writeString(middlename);
         parcel.writeString(email);
         parcel.writeString(phone);
+        parcel.writeString(date);
         parcel.writeInt(groupId);
     }
 }

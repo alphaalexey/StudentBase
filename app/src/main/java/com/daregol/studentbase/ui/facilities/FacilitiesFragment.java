@@ -114,7 +114,7 @@ public class FacilitiesFragment extends Fragment {
                                     } else {
                                         dao.insert(newFacility);
                                     }
-                                } catch (SQLiteConstraintException e) {
+                                } catch (SQLiteConstraintException ignored) {
                                     Snackbar.make(requireView(), R.string.facility_add_error,
                                             Snackbar.LENGTH_SHORT).show();
                                 }

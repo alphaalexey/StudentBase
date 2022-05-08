@@ -45,5 +45,10 @@
     <string name="dialog_student_lastname">Фамилия</string>
     <string name="dialog_student_middlename">Отчество</string>
     <string name="dialog_student_email">Почта</string>
+    <string name="dialog_student_email_invalid">Неверный формат</string>
     <string name="dialog_student_phone">Номер телефона</string>
+    <string name="dialog_student_phone_invalid">Неверный формат</string>
+    <string name="dialog_student_date">Дата рождения</string>
+    <string name="dialog_student_date_hint">дд.мм.гггг</string>
+    <string name="dialog_student_date_invalid">Неверный формат</string>
 </resources>

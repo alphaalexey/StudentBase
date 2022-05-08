@@ -120,7 +120,7 @@ public class GroupsFragment extends Fragment {
                                     } else {
                                         dao.insert(newGroup);
                                     }
-                                } catch (SQLiteConstraintException e) {
+                                } catch (SQLiteConstraintException ignored) {
                                     Snackbar.make(requireView(), R.string.group_add_error,
                                             Snackbar.LENGTH_SHORT).show();
                                 }

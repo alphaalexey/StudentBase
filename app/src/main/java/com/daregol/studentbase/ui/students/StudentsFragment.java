@@ -112,7 +112,7 @@ public class StudentsFragment extends Fragment {
                                     } else {
                                         dao.insert(newStudent);
                                     }
-                                } catch (SQLiteConstraintException e) {
+                                } catch (SQLiteConstraintException ignored) {
                                     Snackbar.make(requireView(), R.string.student_add_error,
                                             Snackbar.LENGTH_SHORT).show();
                                 }

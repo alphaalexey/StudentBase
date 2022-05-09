@@ -17,6 +17,7 @@ import java.util.List;
 public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.StudentViewHolder> {
     private final StudentsClickListener mClickListener;
     private List<Student> mStudentList;
+    private SortType mSortType = SortType.ID;
 
     public StudentsAdapter(StudentsClickListener clickListener) {
         mClickListener = clickListener;
@@ -57,7 +58,14 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.Studen
         return mStudentList.get(position).getId();
     }
 
-    public void setStudentList(final List<Student> studentList) {
+    public void setStudentList(@NonNull final List<Student> studentList) {
+        switch (mSortType) {
+            case ID:
+                studentList.sort(Comparator.comparingInt(Student::getId));
+                break;
+            case LASTNAME:
+                studentList.sort(Comparator.comparing(Student::getLastname));
+        }
         if (mStudentList == null) {
             mStudentList = studentList;
             notifyItemRangeInserted(0, studentList.size());
@@ -91,16 +99,14 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.Studen
         }
     }
 
-    public void sortById() {
-        final List<Student> newStudentList = new ArrayList<>(mStudentList);
-        newStudentList.sort(Comparator.comparingInt(Student::getId));
-        setStudentList(newStudentList);
+    public void setSortType(SortType sortType) {
+        mSortType = sortType;
+        setStudentList(new ArrayList<>(mStudentList));
     }
 
-    public void sortByLastnames() {
-        final List<Student> newStudentList = new ArrayList<>(mStudentList);
-        newStudentList.sort(Comparator.comparing(Student::getLastname));
-        setStudentList(newStudentList);
+    public enum SortType {
+        ID,
+        LASTNAME
     }
 
     static class StudentViewHolder extends RecyclerView.ViewHolder {

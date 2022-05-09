@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="facilities_sorting">
+        <item>По идентификатору</item>
+        <item>По названию</item>
+    </string-array>
+    <string-array name="groups_sorting">
+        <item>По идентификатору</item>
+        <item>По номеру</item>
+    </string-array>
     <string-array name="students_sorting">
         <item>По идентификатору</item>
         <item>По фамилии</item>

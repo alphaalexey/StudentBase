@@ -10,11 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.daregol.studentbase.data.Group;
 import com.daregol.studentbase.databinding.GroupItemBinding;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupViewHolder> {
     private final GroupsClickListener mClickListener;
     private List<Group> mGroupList;
+    private SortType mSortType = SortType.ID;
 
     public GroupsAdapter(GroupsClickListener clickListener) {
         mClickListener = clickListener;
@@ -50,7 +53,14 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupViewH
         return mGroupList.get(position).getId();
     }
 
-    public void setGroupList(final List<Group> groupList) {
+    public void setGroupList(@NonNull final List<Group> groupList) {
+        switch (mSortType) {
+            case ID:
+                groupList.sort(Comparator.comparingInt(Group::getId));
+                break;
+            case NUMBER:
+                groupList.sort(Comparator.comparing(Group::getNumber));
+        }
         if (mGroupList == null) {
             mGroupList = groupList;
             notifyItemRangeInserted(0, groupList.size());
@@ -82,6 +92,16 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.GroupViewH
             mGroupList.addAll(groupList);
             result.dispatchUpdatesTo(this);
         }
+    }
+
+    public void setSortType(SortType sortType) {
+        mSortType = sortType;
+        setGroupList(new ArrayList<>(mGroupList));
+    }
+
+    public enum SortType {
+        ID,
+        NUMBER
     }
 
     static class GroupViewHolder extends RecyclerView.ViewHolder {

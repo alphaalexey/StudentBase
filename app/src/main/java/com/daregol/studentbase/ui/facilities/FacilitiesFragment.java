@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
@@ -22,6 +24,9 @@ import com.daregol.studentbase.db.AppDatabase;
 import com.daregol.studentbase.db.dao.FacilityDao;
 import com.daregol.studentbase.ui.facilitydialog.FacilityDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+
+import org.jetbrains.annotations.Contract;
 
 public class FacilitiesFragment extends Fragment {
     private FragmentFacilitiesBinding binding;
@@ -58,7 +63,7 @@ public class FacilitiesFragment extends Fragment {
                                     if (AppDatabase.getInstance(context, executors)
                                             .facilityDao().delete(facility.getId()) == 0) {
                                         Snackbar.make(binding.getRoot(),
-                                                R.string.facility_remove_error,
+                                                R.string.facilities_remove_error,
                                                 Snackbar.LENGTH_SHORT).show();
                                     }
                                 });
@@ -71,16 +76,45 @@ public class FacilitiesFragment extends Fragment {
         });
         binding.facilitiesList.setAdapter(adapter);
 
+        final String[] sortingTypes = getResources().getStringArray(R.array.facilities_sorting);
+        final ArrayAdapter<String> sortingAdapter =
+                new ArrayAdapter<String>(
+                        requireContext(),
+                        android.R.layout.simple_list_item_1,
+                        sortingTypes) {
+                    @NonNull
+                    @Contract(" -> new")
+                    @Override
+                    public Filter getFilter() {
+                        return new Filter() {
+                            @Override
+                            protected FilterResults performFiltering(CharSequence constraint) {
+                                return null;
+                            }
+
+                            @Override
+                            protected void publishResults(CharSequence constraint, FilterResults results) {
+                            }
+                        };
+                    }
+                };
+        final MaterialAutoCompleteTextView sortingInput = binding.sortingInput;
+        sortingInput.setText(sortingAdapter.getItem(0));
+        sortingInput.setAdapter(sortingAdapter);
+        sortingInput.setOnItemClickListener((parent, view, position, id) -> {
+            setLoading(true);
+            adapter.setSortType(FacilitiesAdapter.SortType.values()[position]);
+            setLoading(false);
+        });
+
         FacilitiesViewModel facilitiesViewModel = new ViewModelProvider(this)
                 .get(FacilitiesViewModel.class);
         facilitiesViewModel.getFacilities().observe(getViewLifecycleOwner(), facilityEntities -> {
             if (facilityEntities != null) {
-                binding.loading.setVisibility(View.GONE);
-                binding.facilitiesList.setVisibility(View.VISIBLE);
-                adapter.setGroupList(facilityEntities);
+                setLoading(false);
+                adapter.setFacilityList(facilityEntities);
             } else {
-                binding.loading.setVisibility(View.VISIBLE);
-                binding.facilitiesList.setVisibility(View.GONE);
+                setLoading(true);
             }
         });
 
@@ -93,6 +127,16 @@ public class FacilitiesFragment extends Fragment {
 
         binding = null;
         adapter = null;
+    }
+
+    protected void setLoading(boolean loading) {
+        if (loading) {
+            binding.loading.setVisibility(View.VISIBLE);
+            binding.facilitiesList.setVisibility(View.GONE);
+        } else {
+            binding.loading.setVisibility(View.GONE);
+            binding.facilitiesList.setVisibility(View.VISIBLE);
+        }
     }
 
     public void startDialog(@Nullable Facility facility) {
@@ -115,7 +159,7 @@ public class FacilitiesFragment extends Fragment {
                                         dao.insert(newFacility);
                                     }
                                 } catch (SQLiteConstraintException ignored) {
-                                    Snackbar.make(requireView(), R.string.facility_add_error,
+                                    Snackbar.make(requireView(), R.string.facilities_add_error,
                                             Snackbar.LENGTH_SHORT).show();
                                 }
                             });

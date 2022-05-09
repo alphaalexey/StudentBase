@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
@@ -23,6 +25,9 @@ import com.daregol.studentbase.db.AppDatabase;
 import com.daregol.studentbase.db.dao.GroupDao;
 import com.daregol.studentbase.ui.groupdialog.GroupDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+
+import org.jetbrains.annotations.Contract;
 
 public class GroupsFragment extends Fragment {
     private FragmentGroupsBinding binding;
@@ -63,7 +68,7 @@ public class GroupsFragment extends Fragment {
                                     if (AppDatabase.getInstance(context, executors)
                                             .groupDao().delete(group.getId()) == 0) {
                                         Snackbar.make(binding.getRoot(),
-                                                R.string.group_remove_error,
+                                                R.string.groups_remove_error,
                                                 Snackbar.LENGTH_SHORT).show();
                                     }
                                 });
@@ -76,17 +81,46 @@ public class GroupsFragment extends Fragment {
         });
         binding.groupsList.setAdapter(adapter);
 
+        final String[] sortingTypes = getResources().getStringArray(R.array.groups_sorting);
+        final ArrayAdapter<String> sortingAdapter =
+                new ArrayAdapter<String>(
+                        requireContext(),
+                        android.R.layout.simple_list_item_1,
+                        sortingTypes) {
+                    @NonNull
+                    @Contract(" -> new")
+                    @Override
+                    public Filter getFilter() {
+                        return new Filter() {
+                            @Override
+                            protected FilterResults performFiltering(CharSequence constraint) {
+                                return null;
+                            }
+
+                            @Override
+                            protected void publishResults(CharSequence constraint, FilterResults results) {
+                            }
+                        };
+                    }
+                };
+        final MaterialAutoCompleteTextView sortingInput = binding.sortingInput;
+        sortingInput.setText(sortingAdapter.getItem(0));
+        sortingInput.setAdapter(sortingAdapter);
+        sortingInput.setOnItemClickListener((parent, view, position, id) -> {
+            setLoading(true);
+            adapter.setSortType(GroupsAdapter.SortType.values()[position]);
+            setLoading(false);
+        });
+
         GroupsViewModel groupsViewModel = new ViewModelProvider(getViewModelStore(),
                 new GroupsViewModelFactory(requireActivity().getApplication(), facility.getId()))
                 .get(GroupsViewModel.class);
         groupsViewModel.getGroups().observe(getViewLifecycleOwner(), groupEntities -> {
             if (groupEntities != null) {
-                binding.loading.setVisibility(View.GONE);
-                binding.groupsList.setVisibility(View.VISIBLE);
+                setLoading(false);
                 adapter.setGroupList(groupEntities);
             } else {
-                binding.loading.setVisibility(View.VISIBLE);
-                binding.groupsList.setVisibility(View.GONE);
+                setLoading(true);
             }
         });
 
@@ -99,6 +133,16 @@ public class GroupsFragment extends Fragment {
 
         binding = null;
         adapter = null;
+    }
+
+    protected void setLoading(boolean loading) {
+        if (loading) {
+            binding.loading.setVisibility(View.VISIBLE);
+            binding.groupsList.setVisibility(View.GONE);
+        } else {
+            binding.loading.setVisibility(View.GONE);
+            binding.groupsList.setVisibility(View.VISIBLE);
+        }
     }
 
     public void startDialog(@Nullable Group group) {
@@ -121,7 +165,7 @@ public class GroupsFragment extends Fragment {
                                         dao.insert(newGroup);
                                     }
                                 } catch (SQLiteConstraintException ignored) {
-                                    Snackbar.make(requireView(), R.string.group_add_error,
+                                    Snackbar.make(requireView(), R.string.groups_add_error,
                                             Snackbar.LENGTH_SHORT).show();
                                 }
                             });

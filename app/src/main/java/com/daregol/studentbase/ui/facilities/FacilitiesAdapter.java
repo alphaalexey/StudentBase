@@ -10,11 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.daregol.studentbase.data.Facility;
 import com.daregol.studentbase.databinding.FacilityItemBinding;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class FacilitiesAdapter extends RecyclerView.Adapter<FacilitiesAdapter.FacilityViewHolder> {
     private final FacilitiesClickListener mClickListener;
     private List<Facility> mFacilityList;
+    private SortType mSortType = SortType.ID;
 
     public FacilitiesAdapter(FacilitiesClickListener clickListener) {
         mClickListener = clickListener;
@@ -50,7 +53,14 @@ public class FacilitiesAdapter extends RecyclerView.Adapter<FacilitiesAdapter.Fa
         return mFacilityList.get(position).getId();
     }
 
-    public void setGroupList(final List<Facility> facilityList) {
+    public void setFacilityList(@NonNull final List<Facility> facilityList) {
+        switch (mSortType) {
+            case ID:
+                facilityList.sort(Comparator.comparingInt(Facility::getId));
+                break;
+            case NAME:
+                facilityList.sort(Comparator.comparing(Facility::getName));
+        }
         if (mFacilityList == null) {
             mFacilityList = facilityList;
             notifyItemRangeInserted(0, facilityList.size());
@@ -82,6 +92,16 @@ public class FacilitiesAdapter extends RecyclerView.Adapter<FacilitiesAdapter.Fa
             mFacilityList.addAll(facilityList);
             result.dispatchUpdatesTo(this);
         }
+    }
+
+    public void setSortType(SortType sortType) {
+        mSortType = sortType;
+        setFacilityList(new ArrayList<>(mFacilityList));
+    }
+
+    public enum SortType {
+        ID,
+        NAME
     }
 
     static class FacilityViewHolder extends RecyclerView.ViewHolder {

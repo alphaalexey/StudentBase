@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Student Base</string>
+    <string name="app_name">LinX</string>
 
     <string name="nav_header_title">@string/app_name</string>
     <string name="nav_header_subtitle">daregol@mail.ru</string>
@@ -21,25 +21,27 @@
     <string name="dialog_ok">Сохранить</string>
     <string name="dialog_cancel">Отмена</string>
 
-    <string name="loading_facilities">Загрузка факультетов</string>
-    <string name="facility_add_error">Не удалось добавить факультет</string>
-    <string name="facility_remove_error">Нельзя удалить факультет с группами</string>
+    <string name="facilities_loading">Загрузка факультетов</string>
+    <string name="facilities_sorting">Сортировка</string>
+    <string name="facilities_add_error">Не удалось добавить факультет</string>
+    <string name="facilities_remove_error">Нельзя удалить факультет с группами</string>
 
     <string name="dialog_facility_title">Факультет</string>
     <string name="dialog_facility_name">Название</string>
     <string name="dialog_facility_name_busy">Факультет с таким названием уже существует</string>
 
-    <string name="loading_groups">Загрузка групп</string>
-    <string name="group_add_error">Не удалось добавить группу</string>
-    <string name="group_remove_error">Нельзя удалить группу со студентами</string>
+    <string name="groups_loading">Загрузка групп</string>
+    <string name="groups_sorting">Сортировка</string>
+    <string name="groups_add_error">Не удалось добавить группу</string>
+    <string name="groups_remove_error">Нельзя удалить группу со студентами</string>
 
     <string name="dialog_group_title">Группа</string>
     <string name="dialog_group_number">Номер</string>
     <string name="dialog_group_number_busy">Группа с таким номером уже существует</string>
 
+    <string name="students_loading">Загрузка групп</string>
     <string name="students_sorting">Сортировка</string>
-    <string name="loading_students">Загрузка групп</string>
-    <string name="student_add_error">Не удалось добавить группу</string>
+    <string name="students_add_error">Не удалось добавить группу</string>
 
     <string name="dialog_student_title">Студент</string>
     <string name="dialog_student_name">Имя</string>
@@ -52,4 +54,12 @@
     <string name="dialog_student_date">Дата рождения</string>
     <string name="dialog_student_date_hint">дд.мм.гггг</string>
     <string name="dialog_student_date_invalid">Неверный формат</string>
+
+    <string name="info">Любая современная организация не может обойтись без базы данных.
+Это учебные заведения, банки, магазины, заводы,
+любые предприятия и государственные учреждения.
+Они используют их для перевода данных в электронный вид и объединения данных,
+а также оперативного доступа к ним. Это позволяет экономить время и средства на затраты.
+\n\nЦель данного приложения - реализовать систему ввода и отображение информации
+о студентах института.\n\nАвторы:\nДарья Голубцова\nДиана Бородина</string>
 </resources>

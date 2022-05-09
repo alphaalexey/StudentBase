@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,8 @@ import com.daregol.studentbase.db.dao.StudentDao;
 import com.daregol.studentbase.ui.studentdialog.StudentDialogFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+
+import org.jetbrains.annotations.Contract;
 
 public class StudentsFragment extends Fragment {
     private FragmentStudentsBinding binding;
@@ -71,26 +74,34 @@ public class StudentsFragment extends Fragment {
         binding.studentsList.setAdapter(adapter);
 
         final String[] sortingTypes = getResources().getStringArray(R.array.students_sorting);
-        ArrayAdapter<String> sortingAdapter =
-                new ArrayAdapter<>(
+        final ArrayAdapter<String> sortingAdapter =
+                new ArrayAdapter<String>(
                         requireContext(),
                         android.R.layout.simple_list_item_1,
-                        sortingTypes);
+                        sortingTypes) {
+                    @NonNull
+                    @Contract(" -> new")
+                    @Override
+                    public Filter getFilter() {
+                        return new Filter() {
+                            @Override
+                            protected FilterResults performFiltering(CharSequence constraint) {
+                                return null;
+                            }
+
+                            @Override
+                            protected void publishResults(CharSequence constraint, FilterResults results) {
+                            }
+                        };
+                    }
+                };
         final MaterialAutoCompleteTextView sortingInput = binding.sortingInput;
         sortingInput.setText(sortingAdapter.getItem(0));
         sortingInput.setAdapter(sortingAdapter);
         sortingInput.setOnItemClickListener((parent, view, position, id) -> {
-            binding.loading.setVisibility(View.VISIBLE);
-            binding.studentsList.setVisibility(View.GONE);
-            switch (position) {
-                case 0:
-                    adapter.sortById();
-                    break;
-                case 1:
-                    adapter.sortByLastnames();
-            }
-            binding.loading.setVisibility(View.GONE);
-            binding.studentsList.setVisibility(View.VISIBLE);
+            setLoading(true);
+            adapter.setSortType(StudentsAdapter.SortType.values()[position]);
+            setLoading(false);
         });
 
         StudentsViewModel studentsViewModel = new ViewModelProvider(getViewModelStore(),
@@ -98,12 +109,10 @@ public class StudentsFragment extends Fragment {
                 .get(StudentsViewModel.class);
         studentsViewModel.getStudents().observe(getViewLifecycleOwner(), studentEntities -> {
             if (studentEntities != null) {
-                binding.loading.setVisibility(View.GONE);
-                binding.studentsList.setVisibility(View.VISIBLE);
+                setLoading(false);
                 adapter.setStudentList(studentEntities);
             } else {
-                binding.loading.setVisibility(View.VISIBLE);
-                binding.studentsList.setVisibility(View.GONE);
+                setLoading(true);
             }
         });
 
@@ -116,6 +125,16 @@ public class StudentsFragment extends Fragment {
 
         binding = null;
         adapter = null;
+    }
+
+    protected void setLoading(boolean loading) {
+        if (loading) {
+            binding.loading.setVisibility(View.VISIBLE);
+            binding.studentsList.setVisibility(View.GONE);
+        } else {
+            binding.loading.setVisibility(View.GONE);
+            binding.studentsList.setVisibility(View.VISIBLE);
+        }
     }
 
     public void startDialog(@Nullable Student student) {
@@ -138,7 +157,7 @@ public class StudentsFragment extends Fragment {
                                         dao.insert(newStudent);
                                     }
                                 } catch (SQLiteConstraintException ignored) {
-                                    Snackbar.make(requireView(), R.string.student_add_error,
+                                    Snackbar.make(requireView(), R.string.students_add_error,
                                             Snackbar.LENGTH_SHORT).show();
                                 }
                             });

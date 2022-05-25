@@ -11,6 +11,7 @@ import com.daregol.studentbase.db.AppDatabase;
 import java.util.List;
 
 public class DataRepository {
+    // Singleton instance
     private static volatile DataRepository instance;
 
     private final AppDatabase database;

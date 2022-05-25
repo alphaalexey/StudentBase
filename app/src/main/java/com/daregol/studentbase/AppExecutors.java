@@ -9,8 +9,10 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class AppExecutors {
+    // Singleton instance
     private static volatile AppExecutors instance;
 
+    // Executors
     private final Executor diskIO;
     private final Executor networkIO;
     private final Executor mainThread;
